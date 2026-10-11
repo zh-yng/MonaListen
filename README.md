@@ -2,7 +2,11 @@
 
 _A spline-based editor turning visual art into spatial sound for the blind._
 
+MonaListen won 2 award categories during Hacklanta '26, namely:
+
 [![🏆 MLH — Best Use of ElevenLabs](https://img.shields.io/badge/🏆_MLH-Best_Use_of_ElevenLabs-7C3AED?style=for-the-badge&labelColor=18181B)](#) [![🏆 Replit — Best Small Business App](https://img.shields.io/badge/🏆_Replit-Best_Small_Business_App-FF6B35?style=for-the-badge&labelColor=18181B)](#)
+
+Learn about / try the project for yourself below!
 
 [![Devpost](https://img.shields.io/badge/Devpost-View_Project-003E54?style=for-the-badge&logo=devpost&logoColor=white)]([YOUR_DEVPOST_URL](https://devpost.com/software/mona-listen)) [![Website](https://img.shields.io/badge/Website-Live_Demo-0D9488?style=for-the-badge&logo=googlechrome&logoColor=white)](https://monalistento.us/)
 
