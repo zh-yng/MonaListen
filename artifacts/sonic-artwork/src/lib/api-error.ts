@@ -16,5 +16,8 @@ const HINT: Record<Service, string> = {
 export function explain(e: unknown, service?: Service, fallback?: string) {
   const base = errorMessage(e, fallback);
   const s = errorStatus(e);
+  const data = (e as { data?: { error?: unknown; message?: unknown } | string } | null)?.data;
+  // Preserve actionable server errors; an overload or retired model is not a bad key.
+  if (typeof data === 'string' || typeof data?.error === 'string' || typeof data?.message === 'string') return base;
   return service && (s === undefined || s >= 500 || s === 501 || s === 503 || s === 424) ? `${base} ${HINT[service]}` : base;
 }

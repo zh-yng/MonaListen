@@ -14,3 +14,9 @@ Use MindAR's pinned browser distribution without its Node/canvas dependencies.
 **Why:** Installing the current MindAR npm package pulled a tar dependency rejected by the package firewall; the compiler/tracker browser distribution does not need that native dependency.
 
 **How to apply:** Do not bypass the firewall. Keep the browser build and its compatible Three.js dependency pinned together.
+
+Do not treat Gemini's model catalog as proof that a model can still generate content.
+
+**Why:** During analysis debugging, Google's model catalog still listed a model whose generate-content endpoint returned a retirement/not-found response naming a replacement. A successful catalog request did not establish generation availability.
+
+**How to apply:** Trust the explicit generate-content error over catalog membership. Verify a replacement before claiming analysis works, and distinguish model retirement, key restrictions, quota limits, and temporary overload instead of blaming every failure on the key. Do not silently substitute models or fabricate shapes when generation fails.
