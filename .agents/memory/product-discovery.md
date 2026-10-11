@@ -87,6 +87,12 @@ Gemini should draft editable segmentation-mask shapes for artist review.
 
 **How to apply:** Generate shape suggestions as drafts; artists must be able to review, edit, accept, or discard them before publishing.
 
+Use the user's own Gemini API key rather than Replit AI Integrations.
+
+**Why:** After the Replit integration required phone verification, the user explicitly chose their own API key and instructed not to retry provisioning.
+
+**How to apply:** Collect GEMINI_API_KEY through the secure Secrets flow and use the standard Gemini SDK; do not retry setupReplitAIIntegrations.
+
 Only analyze an artwork with Gemini after the artist explicitly clicks Analyze. Artists must also be able to use the authoring web app on a laptop.
 
 **Why:** The user explicitly chose opt-in image analysis and clarified that laptop access applies to the artist web app.

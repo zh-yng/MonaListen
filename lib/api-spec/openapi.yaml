@@ -9,7 +9,9 @@ servers:
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: studio
+  - name: experience
+  - name: storage
 paths:
   /healthz:
     get:
@@ -24,6 +26,171 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /integrations/status:
+    get:
+      operationId: getServiceStatus
+      responses:
+        "200":
+          description: Service configuration status
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ServiceStatus" }
+  /studio/summary:
+    get:
+      operationId: getStudioSummary
+      tags: [studio]
+      responses:
+        "200":
+          description: Artist library summary
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StudioSummary" }
+  /studio/artworks:
+    get:
+      operationId: listArtworks
+      tags: [studio]
+      responses:
+        "200":
+          description: Artworks belonging to the authenticated artist
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Artwork" } }
+    post:
+      operationId: createArtwork
+      tags: [studio]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ArtworkInput" }
+      responses:
+        "201":
+          description: Draft created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Artwork" }
+  /studio/artworks/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: getArtwork
+      responses:
+        "200":
+          description: Artwork draft
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Artwork" }
+    patch:
+      operationId: updateArtwork
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ArtworkUpdate" }
+      responses:
+        "200":
+          description: Draft saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Artwork" }
+    delete:
+      operationId: deleteArtwork
+      responses:
+        "204": { description: Artwork removed }
+  /studio/artworks/{id}/analyze:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    post:
+      operationId: analyzeArtwork
+      responses:
+        "200":
+          description: Editable draft suggestions
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ArtworkAnalysis" }
+  /studio/artworks/{id}/regions/{regionId}/preview:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+      - { name: regionId, in: path, required: true, schema: { type: string } }
+    post:
+      operationId: previewRegionSound
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SoundInput" }
+      responses:
+        "200":
+          description: Loop audio stored; artist must approve before publishing
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SoundPreview" }
+  /studio/artworks/{id}/publish:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    post:
+      operationId: publishArtwork
+      responses:
+        "201":
+          description: Immutable version published
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublishedVersion" }
+  /studio/artworks/{id}/versions:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    get:
+      operationId: listArtworkVersions
+      responses:
+        "200":
+          description: Immutable published versions
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/PublishedVersion" } }
+  /studio/artworks/{id}/active-version:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    post:
+      operationId: activateArtworkVersion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VersionInput" }
+      responses:
+        "200":
+          description: Stable shared link explicitly updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Artwork" }
+  /experience/{id}/versions/{version}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+      - { name: version, in: path, required: true, schema: { type: string, description: "Version number or current" } }
+    get:
+      operationId: getExperience
+      tags: [experience]
+      responses:
+        "200":
+          description: Account-free manifest; camera frames and positions stay on device
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ExperienceManifest" }
+  /storage/uploads/request-url:
+    post:
+      operationId: requestUploadUrl
+      tags: [storage]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UploadInput" }
+      responses:
+        "200":
+          description: Direct-to-storage upload parameters
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UploadResult" }
 components:
   schemas:
     HealthStatus:
@@ -33,4 +200,147 @@ components:
           type: string
       required:
         - status
+    ServiceStatus:
+      type: object
+      required: [database, storage, gemini, elevenlabs, analyticsEnabled]
+      properties:
+        database: { type: boolean }
+        storage: { type: boolean }
+        gemini: { type: boolean }
+        elevenlabs: { type: boolean }
+        analyticsEnabled: { type: boolean }
+    StudioSummary:
+      type: object
+      required: [totalArtworks, publishedArtworks, totalRegions, draftArtworks]
+      properties:
+        totalArtworks: { type: integer }
+        publishedArtworks: { type: integer }
+        totalRegions: { type: integer }
+        draftArtworks: { type: integer }
+    Point:
+      type: object
+      required: [x, y]
+      properties:
+        x: { type: number, minimum: 0, maximum: 1 }
+        y: { type: number, minimum: 0, maximum: 1 }
+    SoundRegion:
+      type: object
+      required: [id, name, description, prompt, kind, points, curved, volume, radius, falloffMode, falloffCurve, sourceX, sourceY, pan, audioUrl, audioPrompt, approved]
+      properties:
+        id: { type: string }
+        name: { type: string, minLength: 1, maxLength: 100 }
+        description: { type: string, maxLength: 2000 }
+        prompt: { type: string, maxLength: 2000 }
+        kind: { type: string, enum: [polygon, path] }
+        points: { type: array, items: { $ref: "#/components/schemas/Point" }, maxItems: 500 }
+        curved: { type: boolean, description: "Smooth cubic spline through region points, sampled identically for storage and playback" }
+        volume: { type: number, minimum: 0, maximum: 1 }
+        radius: { type: number, minimum: 0.001, maximum: 2 }
+        falloffMode: { type: string, enum: [interior, source] }
+        falloffCurve: { type: string, enum: [linear, smooth, exponential] }
+        sourceX: { type: number, minimum: 0, maximum: 1 }
+        sourceY: { type: number, minimum: 0, maximum: 1 }
+        pan: { type: number, minimum: -1, maximum: 1 }
+        audioUrl: { type: [string, "null"] }
+        audioPrompt: { type: [string, "null"] }
+        approved: { type: boolean }
+    Artwork:
+      type: object
+      required: [id, title, description, altText, imageUrl, imageWidth, imageHeight, targetUrl, targetImageUrl, regions, needsReview, publishedVersion, createdAt, updatedAt]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        altText: { type: string }
+        imageUrl: { type: [string, "null"] }
+        imageWidth: { type: integer }
+        imageHeight: { type: integer }
+        targetUrl: { type: [string, "null"] }
+        targetImageUrl: { type: [string, "null"] }
+        regions: { type: array, items: { $ref: "#/components/schemas/SoundRegion" } }
+        needsReview: { type: boolean }
+        publishedVersion: { type: [integer, "null"] }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    ArtworkInput:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 200 }
+        description: { type: string, maxLength: 2000 }
+    ArtworkUpdate:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, maxLength: 200 }
+        description: { type: string, maxLength: 2000 }
+        altText: { type: string, maxLength: 5000 }
+        imageUrl: { type: [string, "null"] }
+        imageWidth: { type: integer, minimum: 0 }
+        imageHeight: { type: integer, minimum: 0 }
+        targetUrl: { type: [string, "null"] }
+        targetImageUrl: { type: [string, "null"] }
+        regions: { type: array, maxItems: 32, items: { $ref: "#/components/schemas/SoundRegion" } }
+        needsReview: { type: boolean }
+        revision: { type: string, description: "Expected updatedAt; prevents overwriting another tab's changes" }
+    ArtworkAnalysis:
+      type: object
+      required: [altText, suggestions]
+      properties:
+        altText: { type: string }
+        suggestions: { type: array, items: { $ref: "#/components/schemas/SoundRegion" } }
+    SoundInput:
+      type: object
+      required: [prompt]
+      properties:
+        prompt: { type: string, minLength: 3, maxLength: 2000 }
+        duration: { type: number, minimum: 1, maximum: 30 }
+    SoundPreview:
+      type: object
+      required: [audioUrl, prompt]
+      properties:
+        audioUrl: { type: string }
+        prompt: { type: string }
+    VersionInput:
+      type: object
+      required: [version]
+      properties:
+        version: { type: integer, minimum: 1 }
+    PublishedVersion:
+      type: object
+      required: [version, viewerPath, createdAt, regionCount, active]
+      properties:
+        version: { type: integer }
+        viewerPath: { type: string }
+        createdAt: { type: string }
+        regionCount: { type: integer }
+        active: { type: boolean }
+    ExperienceManifest:
+      type: object
+      required: [artworkId, title, version, imageUrl, imageWidth, imageHeight, altText, targetUrl, regions, alignmentAudioUrl, lostAudioUrl, descriptionAudioUrl]
+      properties:
+        artworkId: { type: string }
+        title: { type: string }
+        version: { type: integer }
+        imageUrl: { type: string }
+        imageWidth: { type: integer }
+        imageHeight: { type: integer }
+        altText: { type: string }
+        targetUrl: { type: string }
+        regions: { type: array, items: { $ref: "#/components/schemas/SoundRegion" } }
+        alignmentAudioUrl: { type: string }
+        lostAudioUrl: { type: string }
+        descriptionAudioUrl: { type: [string, "null"] }
+    UploadInput:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name: { type: string, maxLength: 200 }
+        size: { type: integer, minimum: 1, maximum: 20000000 }
+        contentType: { type: string }
+    UploadResult:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL: { type: string }
+        objectPath: { type: string, description: "/objects/uploads/id; serving URL is /api/storage plus this path" }
 
