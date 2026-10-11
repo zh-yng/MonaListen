@@ -15,11 +15,17 @@ The first release includes camera exploration plus an accessible non-camera touc
 
 **How to apply:** Include a way to explore without camera tracking.
 
-The non-camera mode is a touch map only, not a region list. The user emphasized: "remember that the viewers are blind."
+The first release targets iPhone only and uses camera tracking only. Do not include the previously selected non-camera touch map in this release.
 
-**Why:** The user explicitly chose touch-only exploration and reiterated the intended audience.
+**Why:** The user clarified the first-release platform and removed the non-camera alternative.
 
-**How to apply:** Treat blind visitors as the primary audience for exploration. Do not substitute region-list navigation for the chosen touch map. A helper may handle setup and positioning; independent nonvisual onboarding, orientation, and exit are not required.
+**How to apply:** Keep iPhone camera tracking as the only exploration mode in the first release. Confirm VoiceOver accessibility separately; "camera only" does not automatically settle screen-reader support.
+
+The user emphasized: "remember that the viewers are blind."
+
+**Why:** The user explicitly reiterated the intended primary audience.
+
+**How to apply:** Design the audio exploration and its key controls for blind visitors; distinguish screen-reader support from voice commands or audio content. A helper may handle setup and positioning; independent nonvisual setup is not required.
 
 Regions play sound only, with no spoken region-entry labels. Audio tracks must not cut between one another: they play continuously and mix/blend using region settings and distance.
 
