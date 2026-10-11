@@ -33,11 +33,17 @@ The user stated that someone else can set up the experience for blind visitors.
 
 **How to apply:** Support assisted setup rather than imposing independent nonvisual operation as a release requirement. Keep the actual listening and exploration experience appropriate for blind visitors.
 
-The camera-viewer goal is to move close to individual artwork details; maintaining the full artwork in view is not an acceptable default interaction.
+The camera viewer must support both exploring from a viewing distance and moving close to individual details.
 
-**Why:** The user explicitly chose close detail exploration over aiming from a distance.
+**Why:** The user selected close detail exploration and then clarified that the app should support both distance and close-up behavior.
 
-**How to apply:** Make close-range tracking a core technical requirement and validate MindAR tracking feasibility with representative artwork textures. Do not design the primary interaction around keeping the whole painting in frame.
+**How to apply:** Make close-range tracking a core technical requirement and validate MindAR tracking feasibility with representative artwork textures. Support transitions between distance and close-up behavior.
+
+When camera tracking is lost, fade out the mix and guide the visitor back until tracking returns.
+
+**Why:** The user confirmed fading and audio guidance, with both distance and detail exploration.
+
+**How to apply:** Fade rather than leave stale spatial positions playing; restore the mix smoothly when the target reacquires.
 
 Artists choose per region whether enclosed geometry uses interior plateau volume or falloff from a positioned point.
 
