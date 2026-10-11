@@ -1,2 +1,3 @@
 - [Product scope and discovery](product-discovery.md) — First release is the self-service artist platform; clarify implementation with the user before development.
 - [Provider constraints](service-connection-constraints.md) — preserve explicit Tiger SSL semantics; use MindAR browser distribution without blocked native dependencies.
+- [Runtime resets](runtime-resets.md) — recheck managed workflows after a testing-worker reset; earlier running status may no longer be valid.
