@@ -13,7 +13,13 @@ The first release includes camera exploration plus an accessible non-camera touc
 
 **Why:** The user explicitly selected both modes during requirements discovery.
 
-**How to apply:** Include a way to explore without camera tracking; clarify its screen-reader interaction rather than assuming free-touch mapping is sufficient.
+**How to apply:** Include a way to explore without camera tracking.
+
+The non-camera mode is a touch map only, not a region list. The user emphasized: "remember that the viewers are blind."
+
+**Why:** The user explicitly chose touch-only exploration and reiterated the intended audience.
+
+**How to apply:** Treat blind visitors as the primary audience. Design onboarding, orientation, exploration, and exit without visual dependence. Validate direct-touch behavior with VoiceOver and TalkBack instead of assuming ordinary pointer gestures are sufficient. Do not substitute region-list navigation for the chosen touch map.
 
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
