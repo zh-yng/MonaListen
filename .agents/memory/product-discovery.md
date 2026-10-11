@@ -19,7 +19,19 @@ The non-camera mode is a touch map only, not a region list. The user emphasized:
 
 **Why:** The user explicitly chose touch-only exploration and reiterated the intended audience.
 
-**How to apply:** Treat blind visitors as the primary audience. Design onboarding, orientation, exploration, and exit without visual dependence. Validate direct-touch behavior with VoiceOver and TalkBack instead of assuming ordinary pointer gestures are sufficient. Do not substitute region-list navigation for the chosen touch map.
+**How to apply:** Treat blind visitors as the primary audience for exploration. Do not substitute region-list navigation for the chosen touch map. A helper may handle setup and positioning; independent nonvisual onboarding, orientation, and exit are not required.
+
+Regions play sound only, with no spoken region-entry labels. Audio tracks must not cut between one another: they play continuously and mix/blend using region settings and distance.
+
+**Why:** The user explicitly chose sound-only regions and clarified that overlapping spatial mixing, rather than track switching, is the intended experience.
+
+**How to apply:** Preserve continuous loop playback while smoothly changing gains and panning. Do not restart or abruptly switch tracks on region entry. Overall artwork description remains separate from region-entry behavior.
+
+The user stated that someone else can set up the experience for blind visitors.
+
+**Why:** The user corrected the assumption that visitors must independently start, orient, explore, and exit without sight.
+
+**How to apply:** Support assisted setup rather than imposing independent nonvisual operation as a release requirement. Keep the actual listening and exploration experience appropriate for blind visitors.
 
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
