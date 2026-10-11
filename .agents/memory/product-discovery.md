@@ -57,6 +57,12 @@ Artists will authenticate with Replit-managed Clerk.
 
 **How to apply:** Use Replit-managed Clerk for artist accounts; viewers remain account-free.
 
+Store uploaded artwork and generated experience files in Replit App Storage.
+
+**Why:** The user chose App Storage over an existing external provider or deferring storage.
+
+**How to apply:** Use App Storage for painting uploads, generated audio, and MindAR targets; do not store large assets in the database.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
