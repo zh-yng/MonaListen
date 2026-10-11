@@ -10,14 +10,25 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@clerk/express": "^2.1.78",
+    "@clerk/shared": "^4.40.0",
+    "@google-cloud/storage": "^8.4.0",
+    "@google/genai": "^2.28.0",
+    "@replit/connectors-sdk": "^0.4.3",
+    "@types/pg": "^8.23.1",
     "@workspace/api-zod": "workspace:*",
     "@workspace/db": "workspace:*",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "drizzle-orm": "catalog:",
     "express": "^5.2.1",
+    "google-auth-library": "^11.2.0",
+    "http-proxy-middleware": "^4.2.0",
+    "pg": "^8.23.0",
     "pino": "^9.14.0",
-    "pino-http": "^10.5.0"
+    "pino-http": "^10.5.0",
+    "sharp": "^0.35.5",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",

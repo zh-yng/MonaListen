@@ -1,0 +1,2 @@
+This Vite error occurs because your bundler doesn't know how to resolve the @ alias to your src directory, or the file src/pages/editor is missing its extension or index file.
+To fix this, you need to check two things: your Vite configuration and your TypeScript configuration.
