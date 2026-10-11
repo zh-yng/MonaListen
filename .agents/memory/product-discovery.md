@@ -3,17 +3,17 @@ name: Product scope and discovery
 description: User-confirmed release scope and requirements clarification approach.
 ---
 
+The app is called "MonaListen", with this exact capitalization and no space.
+
+**Why:** The user explicitly named the app and repeated the instruction.
+
+**How to apply:** Use MonaListen in all user-facing branding and project titles.
+
 The user selected the self-service artist platform for the first release, rather than a limited artwork pilot or concept prototype.
 
 **Why:** The user explicitly selected this scope during requirements discovery.
 
 **How to apply:** Scope the release around artist accounts, multiple artworks, a complete editor, publishing, and the accessible tracked viewer.
-
-The first release includes camera exploration plus an accessible non-camera touch alternative.
-
-**Why:** The user explicitly selected both modes during requirements discovery.
-
-**How to apply:** Include a way to explore without camera tracking.
 
 The first release targets iPhone only and uses camera tracking only. Do not include the previously selected non-camera touch map in this release.
 

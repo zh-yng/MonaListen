@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "MonaListen"
+description = "An accessible platform for artists to map sound onto visual artworks and publish iPhone camera-based listening experiences for blind and low-vision visitors. Artists create, edit, and publish artworks from a laptop; visitors explore the artwork with spatial audio, camera tracking, and VoiceOver-accessible controls."
+version = "1.0.0"
+id = "artifacts/sonic-artwork"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24499
+
+[services.development]
+run = "pnpm --filter @workspace/sonic-artwork run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sonic-artwork", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/sonic-artwork/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24499"
+BASE_PATH = "/"
