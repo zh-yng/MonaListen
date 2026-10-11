@@ -57,6 +57,12 @@ When camera tracking is lost, fade out the mix and guide the visitor back until 
 
 **How to apply:** Fade rather than leave stale spatial positions playing; restore the mix smoothly when the target reacquires.
 
+The user confirmed that the camera listening experience works well on a real iPhone.
+
+**Why:** The user reported: "I just tested on the phone, it's actually working really well already."
+
+**How to apply:** Do not describe basic camera listening as wholly unverified anymore. This confirmation does not independently establish close-up tracking reliability or VoiceOver behavior.
+
 Artists choose per region whether enclosed geometry uses interior plateau volume or falloff from a positioned point.
 
 **Why:** The user selected per-region choice rather than one global falloff rule.

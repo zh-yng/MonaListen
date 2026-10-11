@@ -21,6 +21,12 @@ Browser-only CDN modules resolve imports through the browser, not Vite's npm dep
 
 **How to apply:** Keep the import map before module scripts and verify the remote dependency graph, including bare subpath imports, against the pinned compatible versions. A successful Vite build alone does not verify externally loaded viewer modules.
 
+Preserve MindAR's camera-video sizing and centering; prevent global media width limits from clamping its oversized video.
+
+**Why:** MindAR sizes the video to cover the stage and offsets it to center the crop. Tailwind's default video max-width clamped that width without changing the offset, leaving a large dark strip even while phone tracking worked.
+
+**How to apply:** Scope the media-reset override to the camera stage and allow the library's oversized video to be clipped by the stage. Do not independently force video width, height, or positioning, which can disagree with its camera projection. Verify coverage in portrait and landscape.
+
 Keep remote viewer dependency verification as a fail-closed release check; treat native browser evaluation as a separate result when the host cannot launch WebKit.
 
 **Why:** CDN outages and missing JavaScript files must not look like successful validation. The Replit/NixOS host can download Playwright's WebKit binary but still lack its many required shared libraries; downloading the browser alone is not proof the native import probe ran.

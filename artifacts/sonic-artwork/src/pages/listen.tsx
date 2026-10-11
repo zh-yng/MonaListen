@@ -66,7 +66,7 @@ export default function Listen() {
   const active = status !== 'idle' && status !== 'starting';
   return (
     <div className="relative min-h-[100dvh] bg-[hsl(232_38%_10%)] text-[hsl(38_30%_92%)]">
-      <div ref={stage} className="pointer-events-none absolute inset-0 overflow-hidden opacity-60 [&>video]:h-full [&>video]:w-full [&>video]:object-cover" aria-hidden data-testid="camera-stage" />
+      <div ref={stage} className="pointer-events-none absolute inset-0 overflow-hidden opacity-60 [&>video]:max-w-none" aria-hidden data-testid="camera-stage" />
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(232_38%_10%/.85)] via-transparent to-[hsl(232_38%_10%/.95)]" aria-hidden />
       <main className="relative mx-auto flex min-h-[100dvh] max-w-md flex-col px-5 py-8">
         {isLoading && <div className="space-y-4 pt-10"><Skeleton className="h-10 w-2/3 bg-white/10" /><Skeleton className="h-40 bg-white/10" /></div>}
