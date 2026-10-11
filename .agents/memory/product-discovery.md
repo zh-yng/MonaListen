@@ -93,6 +93,12 @@ Only analyze an artwork with Gemini after the artist explicitly clicks Analyze. 
 
 **How to apply:** Make image transfer for AI analysis artist-initiated. Support laptop artist workflows while keeping the visitor camera experience iPhone-only.
 
+After a crop change, preserve existing region mappings but require artist review before republishing.
+
+**Why:** The user selected preservation with review instead of clearing shapes or locking the crop.
+
+**How to apply:** Retain the mappings, flag them for verification against the new crop, and block republishing until reviewed.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
