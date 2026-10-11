@@ -21,6 +21,12 @@ The first release targets iPhone only and uses camera tracking only. Do not incl
 
 **How to apply:** Keep iPhone camera tracking as the only exploration mode in the first release. Confirm VoiceOver accessibility separately; "camera only" does not automatically settle screen-reader support.
 
+Support VoiceOver navigation in the iPhone viewer.
+
+**Why:** The user explicitly confirmed support for VoiceOver.
+
+**How to apply:** Make viewer controls and status accessible to the iPhone screen reader while keeping artwork exploration camera-based spatial audio; do not add voice commands or spoken region labels unless requested.
+
 The user emphasized: "remember that the viewers are blind."
 
 **Why:** The user explicitly reiterated the intended primary audience.
