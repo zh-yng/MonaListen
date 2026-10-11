@@ -41,6 +41,6 @@ Do not treat Gemini's model catalog as proof that a model can still generate con
 
 For Git-provider connections, verify actual Git authentication rather than trusting connection-health metadata.
 
-**Why:** A GitHub connection reported active/healthy and already attached, but workspace Git authentication was rejected and the GitHub CLI had no login. Standard integration reconnect cards then rejected both the saved connection and connector handles. This is distinct from an unavailable repository or divergent Git history.
+**Why:** A GitHub connection reported active/healthy and already attached, but workspace Git authentication was rejected and the GitHub CLI had no login. Attachment status can also disagree: discovery may say the connection is unbound while attaching it reports that it is already active, without restoring Git access. Standard integration reconnect cards previously rejected both the saved connection and connector handles. This is distinct from an unavailable repository or divergent Git history.
 
 **How to apply:** Start with a read-only remote check. Follow the documented OAuth recovery flow, but stop retrying cards if they reject the provider handles. Consult current Replit documentation for the account's Git Providers reconnect flow. Never extract provider credentials, put tokens into remotes, force-push, or modify existing history to work around authentication failures.
