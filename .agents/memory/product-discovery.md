@@ -51,6 +51,12 @@ Artists choose per region whether enclosed geometry uses interior plateau volume
 
 **How to apply:** Keep both falloff behaviors configurable on each sound region.
 
+Artists will authenticate with Replit-managed Clerk.
+
+**Why:** The user selected this provider over Auth0 and deferring sign-in.
+
+**How to apply:** Use Replit-managed Clerk for artist accounts; viewers remain account-free.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
