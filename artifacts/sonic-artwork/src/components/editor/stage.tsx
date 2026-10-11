@@ -39,11 +39,14 @@ export function Stage(p: Props) {
   };
   const sel = p.regions.find((r) => r.id === p.selectedId);
 
-  const outline = (r: SoundRegion) => {
+  const outline = (r: SoundRegion, point: (pt: Point) => string) => {
     const pts = r.curved && r.points.length >= 2 ? sampleRegion(r) : r.points;
     if (!pts.length) return '';
-    return 'M' + pts.map(px).join(' L') + (r.kind === 'polygon' ? 'Z' : '');
+    return 'M' + pts.map(point).join(' L') + (r.kind === 'polygon' ? 'Z' : '');
   };
+  const pixelPoint = (pt: Point) => `${pt.x * size.w},${pt.y * size.h}`;
+  const pixelOutline = (r: SoundRegion) => outline(r, pixelPoint);
+  const normalizedOutline = (r: SoundRegion) => outline(r, (pt) => `${pt.x},${pt.y}`);
 
   const onBg = (e: React.PointerEvent) => {
     svgRef.current?.focus();
@@ -106,11 +109,38 @@ export function Stage(p: Props) {
             const c = REGION_COLORS[i % REGION_COLORS.length]; const active = r.id === p.selectedId;
             return (
               <g key={r.id}>
-                {r.falloffMode === 'source' && active && <circle cx={r.sourceX * size.w} cy={r.sourceY * size.h} r={r.radius * size.w} fill={`hsl(${c} / .12)`} stroke={`hsl(${c} / .6)`} strokeDasharray="4 4" />}
-                <path d={outline(r)} fill={r.kind === 'polygon' ? `hsl(${c} / ${active ? 0.3 : 0.16})` : 'none'} stroke={`hsl(${c})`} strokeWidth={active ? 3 : 2} strokeLinejoin="round" strokeLinecap="round"
+                {active && r.radius > 0 && (
+                  <g transform={`scale(${size.w} ${size.h})`} pointerEvents="none" data-testid={`reach-preview-${r.id}`}>
+                    {r.falloffMode === 'source' ? (
+                      <ellipse
+                        cx={r.sourceX} cy={r.sourceY} rx={r.radius} ry={r.radius}
+                        fill={`hsl(${c} / .12)`}
+                        stroke={`hsl(${c} / .8)`}
+                        strokeWidth=".003"
+                        strokeDasharray=".016 .012"
+                        strokeLinecap="round"
+                        vectorEffect="non-scaling-stroke"
+                      >
+                        <title>Sound reach from {r.name || 'this region'}'s source point</title>
+                      </ellipse>
+                    ) : (
+                      <path
+                        d={normalizedOutline(r)}
+                        fill="none"
+                        stroke={`hsl(${c} / .2)`}
+                        strokeWidth={r.radius * 2}
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                      >
+                        <title>Sound reach extending outward from {r.name || 'this region'}'s shape</title>
+                      </path>
+                    )}
+                  </g>
+                )}
+                <path d={pixelOutline(r)} fill={r.kind === 'polygon' ? `hsl(${c} / ${active ? 0.3 : 0.16})` : 'none'} stroke={`hsl(${c})`} strokeWidth={active ? 3 : 2} strokeLinejoin="round" strokeLinecap="round"
                   className={p.tool === 'select' ? 'cursor-pointer' : ''}
                   onPointerDown={(e) => { if (p.tool === 'select') { e.stopPropagation(); p.onSelect(r.id); svgRef.current?.focus(); } }} />
-                {r.kind === 'path' && <path d={outline(r)} fill="none" stroke="transparent" strokeWidth={14} onPointerDown={(e) => { if (p.tool === 'select') { e.stopPropagation(); p.onSelect(r.id); } }} />}
+                {r.kind === 'path' && <path d={pixelOutline(r)} fill="none" stroke="transparent" strokeWidth={14} onPointerDown={(e) => { if (p.tool === 'select') { e.stopPropagation(); p.onSelect(r.id); } }} />}
               </g>
             );
           })}

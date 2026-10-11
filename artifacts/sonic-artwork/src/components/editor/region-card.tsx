@@ -65,7 +65,17 @@ export function RegionCard({ r, index, selected, previewing, previewError, onSel
 
           <div className="grid gap-5 sm:grid-cols-2">
             <Row label="Volume" value={r.volume.toFixed(2)}><Slider min={0} max={1} step={0.01} value={[r.volume]} onValueChange={([v]) => onChange({ volume: v })} data-testid={`slider-volume-${id}`} /></Row>
-            <Row label="Reach (radius)" value={r.radius.toFixed(2)}><Slider min={0.001} max={2} step={0.01} value={[r.radius]} onValueChange={([v]) => onChange({ radius: v })} data-testid={`slider-radius-${id}`} /></Row>
+            <Row label="Reach (radius)" value={r.radius.toFixed(2)}>
+              <>
+                <Slider min={0.001} max={2} step={0.01} value={[r.radius]} onValueChange={([v]) => onChange({ radius: v })} data-testid={`slider-radius-${id}`} />
+                <p className="text-xs text-muted-foreground" data-testid={`text-radius-help-${id}`}>
+                  {r.falloffMode === 'source'
+                    ? 'The dotted oval previews reach from the source point.'
+                    : 'The soft outline previews reach extending out from the region.'}
+                  {selected ? '' : ' Select this region to view it on the image.'}
+                </p>
+              </>
+            </Row>
             <Row label="Stereo pan" value={r.pan.toFixed(2)}><Slider min={-1} max={1} step={0.05} value={[r.pan]} onValueChange={([v]) => onChange({ pan: v })} data-testid={`slider-pan-${id}`} /></Row>
             <div className="flex items-center justify-between gap-3 rounded-md border p-3">
               <Label htmlFor={`c-${id}`}>Smooth spline</Label>

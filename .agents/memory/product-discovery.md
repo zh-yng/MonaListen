@@ -75,6 +75,12 @@ Artists choose per region whether enclosed geometry uses interior plateau volume
 
 **How to apply:** Keep both falloff behaviors configurable on each sound region.
 
+The artist editor should visualize the current reach radius on the selected region's artwork image.
+
+**Why:** The user asked to see how the radius parameter affects a region before saving or publishing.
+
+**How to apply:** Keep the overlay in sync with the current unsaved radius, and distinguish reach measured from a source point from reach measured out from the region shape.
+
 Artists will authenticate with Replit-managed Clerk.
 
 **Why:** The user selected this provider over Auth0 and deferring sign-in.
