@@ -105,6 +105,12 @@ Reuse the artist-approved sound preview as published audio rather than generatin
 
 **How to apply:** Publishing should use the exact approved preview unless its prompt or audio is explicitly changed.
 
+Visitor analytics are off by default.
+
+**Why:** The user selected no visitor position or region-activity collection in the first release.
+
+**How to apply:** Do not collect normalized positions, session IDs, dwell time, or region engagement unless a future explicit product decision enables analytics.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
