@@ -63,6 +63,12 @@ Store uploaded artwork and generated experience files in Replit App Storage.
 
 **How to apply:** Use App Storage for painting uploads, generated audio, and MindAR targets; do not store large assets in the database.
 
+Keep Tiger Cloud with PostgreSQL/PostGIS as the required spatial database.
+
+**Why:** The user chose Tiger Cloud over another PostGIS provider or deferring the decision.
+
+**How to apply:** Plan a secure standard PostgreSQL connection and verify PostGIS availability before depending on spatial functions.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
