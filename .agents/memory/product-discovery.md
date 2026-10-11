@@ -69,6 +69,12 @@ Keep Tiger Cloud with PostgreSQL/PostGIS as the required spatial database.
 
 **How to apply:** Plan a secure standard PostgreSQL connection and verify PostGIS availability before depending on spatial functions.
 
+Gemini should draft editable segmentation-mask shapes for artist review.
+
+**Why:** The user chose draft masks over descriptions-only or offering both modes.
+
+**How to apply:** Generate shape suggestions as drafts; artists must be able to review, edit, accept, or discard them before publishing.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
