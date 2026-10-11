@@ -87,6 +87,12 @@ Gemini should draft editable segmentation-mask shapes for artist review.
 
 **How to apply:** Generate shape suggestions as drafts; artists must be able to review, edit, accept, or discard them before publishing.
 
+Only analyze an artwork with Gemini after the artist explicitly clicks Analyze. Artists must also be able to use the authoring web app on a laptop.
+
+**Why:** The user explicitly chose opt-in image analysis and clarified that laptop access applies to the artist web app.
+
+**How to apply:** Make image transfer for AI analysis artist-initiated. Support laptop artist workflows while keeping the visitor camera experience iPhone-only.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
