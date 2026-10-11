@@ -1,0 +1,66 @@
+Product Requirement Document: Interactive Sonic Artwork Platform
+1. Executive Summary & Goals
+This React-based web application enables artists to create accessible, interactive sonic experiences based on visual artworks, specifically for blind and visually impaired audiences. Viewers explore physical paintings with their smartphones. The platform combines image region mapping, AI-assisted authoring, spatial audio generation, and browser-based augmented reality tracking.
+The platform integrates three core services:
+ElevenLabs generates the sound effects, looping ambience, and spoken cues.
+Gemini API analyzes the artwork to draft region suggestions, sound prompts, and alt-text.
+Tiger Data (Tiger Cloud, PostgreSQL + PostGIS) stores region geometry and answers spatial queries for the viewer experience and for analytics.
+MindAR continues to handle physical target tracking in the viewer.
+2. Architecture & Coordinate System
+To keep the web editor and the real-world viewer aligned, all spatial data uses a normalized 2D coordinate system.
+Artist Space (Normalized Coordinates): When an artist uploads and crops an image, all region points and Bezier spline control points are stored as normalized coordinates (X: [0.0, 1.0], Y: [0.0, 1.0]), with the top-left corner at (0, 0). Splines are sampled into polylines for storage and distance calculations.
+Spatial Storage (Tiger Data): Regions are stored as PostGIS geometries (polygons for enclosed regions, linestrings for paths) in an unprojected Cartesian space, which is valid because all coordinates are already normalized. Distance falloff uses ST_Distance against the region boundary.
+Target Feature Generation: The cropped image is compiled into a MindAR .mind target file containing feature points extracted from the visual texture.
+Viewer Pose & Mapping: MindAR detects the painting and returns the camera pose relative to the target. The camera focus point is converted to normalized (0–1) coordinates in real time.
+Runtime Split: The viewer caches the region geometry and audio manifest when the experience loads. Per-frame distance and panning calculations run on the device, never against the database. The Tiger Data backend is used on load, on publish, and for logging, so audio never waits on a network round trip.
+3. Artist Workflow & Requirements
+Account & Library Management: Artists authenticate to create, edit, or delete their interactive artworks. The authentication provider is not yet chosen; Auth0 is the planned option if it’s used.
+Artwork Image Setup: Artists upload an image and crop it to establish base dimensions and aspect ratio.
+AI-Assisted Analysis (Gemini): On upload, Gemini analyzes the image and returns:
+Suggested region boundaries with short descriptions (for example, “the horizon line” or “the figure’s outstretched hand”).
+Draft sound prompts for each suggested region.
+Descriptive alt-text covering composition, color, and texture.
+All suggestions are drafts. Artists can accept, edit, or discard each one.
+Region Definition Editor: An interactive canvas sidebar allows drawing region points or Bezier splines over the artwork. Saved shapes become regions, whether they came from Gemini or were drawn by hand.
+Sound Region Configuration: Clicking a region opens a dialog to specify:
+Text prompt for sound generation via ElevenLabs, with a Gemini-suggested prompt pre-filled and editable.
+Track volume, distance falloff curve or radius, and stereo panning parameters.
+Preview button that generates a short loop with ElevenLabs before the artist commits.
+Guards & Generation: Unsaved changes trigger a confirmation modal before navigation. Clicking “Generate” runs the publish pipeline (see Section 5) and outputs a shareable viewer link.
+4. Viewer Experience & Phone Calibration
+No Account Web Access: Viewers open the experience directly through a view URL in a mobile browser.
+Calibration Protocol: To calibrate tracking across lighting conditions and angles:
+Step 1 (Audio-Guided Alignment): Spoken cues, generated with ElevenLabs and stored in the artwork’s audio manifest, direct the user to scan the full bounds of the painting from top-left to bottom-right.
+Step 2 (Feature Lock Feedback): As MindAR detects feature markers, audio chimes and haptic vibrations confirm tracking anchor acquisition.
+Step 3 (Continuous Tracking & Recalibration): If tracking drops, an audible alert tells the user to step back or re-center the camera.
+Spatial Audio Exploration: As the viewer moves the camera focus across the painting, the Web Audio API calculates volume, distance falloff, and stereo panning for each region in real time. The experience is designed for headphones and earbuds.
+Accessibility: The interface supports VoiceOver and TalkBack. Gemini-generated alt-text is available as a spoken description on demand. Haptic feedback accompanies key audio cues.
+5. Publish Pipeline
+When the artist clicks Generate, the backend performs these steps in order:
+Audio generation: ElevenLabs generates a seamlessly looping sound effect for each region’s prompt, and TTS generates the calibration cues. Files are stored in object storage, and their URLs are recorded in the manifest.
+Target compilation: The cropped image is converted into a MindAR .mind target file.
+Region persistence: Region geometries, falloff and panning parameters, audio URLs, and alt-text are written to Tiger Data in one transaction, keyed to the artwork ID and a version number.
+Manifest and link: The backend builds a JSON manifest containing the region geometry and audio references, then returns a shareable viewer URL.
+Publishing a new version never alters an existing link’s behavior until the artist chooses to update it.
+6. Data Model (Tiger Data)
+artworks: ID, artist ID, title, image URL, dimensions, published version, alt-text, MindAR target URL.
+regions: ID, artwork ID, version, geometry (PostGIS polygon or linestring), description, sound prompt, audio URL, volume, falloff curve or radius, pan parameters.
+visitor_events (optional, hypertable): Session ID, artwork ID, timestamp, normalized X/Y, nearest region ID. This data is used for analytics, such as which regions visitors dwell on most. Logging is batched and sent asynchronously, and the viewer never depends on it.
+Core spatial queries include:
+Which regions contain a given point (ST_Contains).
+Distance from a point to each region boundary (ST_Distance), used to set falloff at publish-time validation and for analytics.
+Nearest region to a given point (ORDER BY geometry <-> point LIMIT 1), used in the logged events.
+7. Non-Functional Requirements
+Latency: Audio parameters update within one animation frame of camera movement. No database calls occur in the render loop.
+Responsiveness: The artist editor and viewer work across phone, tablet, and desktop sizes.
+Asset delivery: Audio and target files are served from a CDN close to viewers.
+Privacy: Visitor logging stores normalized positions and session IDs only. It stores no images, identifying information, or device data.
+Cost controls: Gemini analysis runs once per upload, and ElevenLabs previews are rate-limited. Tiger Cloud usage is monitored against the free trial limits during development.
+8. Risks & Open Questions
+MindAR tracking quality varies with paint texture. Test with several artworks early.
+Loop seamlessness from ElevenLabs needs verification for each generated effect.
+Gemini suggestion accuracy for region boundaries may be imprecise, so the editor must make correction easy.
+Backend hosting is not yet decided.
+Tiger Data requirements: Confirm that PostGIS is enabled on the chosen Tiger Cloud plan, and plan around the free trial’s limits for the demo.
+Authentication provider is still open.
+
