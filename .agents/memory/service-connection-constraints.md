@@ -15,6 +15,12 @@ Use MindAR's pinned browser distribution without its Node/canvas dependencies.
 
 **How to apply:** Do not bypass the firewall. Keep the browser build and its compatible Three.js dependency pinned together.
 
+Browser-only CDN modules resolve imports through the browser, not Vite's npm dependency resolution.
+
+**Why:** A production build succeeded while the viewer failed in Safari: MindAR's remote module imported a Three.js add-on that was not covered by the browser import map. Bundling checks did not traverse the external module loaded with Vite's ignore directive.
+
+**How to apply:** Keep the import map before module scripts and verify the remote dependency graph, including bare subpath imports, against the pinned compatible versions. A successful Vite build alone does not verify externally loaded viewer modules.
+
 Do not treat Gemini's model catalog as proof that a model can still generate content.
 
 **Why:** During analysis debugging, Google's model catalog still listed a model whose generate-content endpoint returned a retirement/not-found response naming a replacement. A successful catalog request did not establish generation availability.
