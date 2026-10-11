@@ -33,6 +33,18 @@ The user stated that someone else can set up the experience for blind visitors.
 
 **How to apply:** Support assisted setup rather than imposing independent nonvisual operation as a release requirement. Keep the actual listening and exploration experience appropriate for blind visitors.
 
+The camera-viewer goal is to move close to individual artwork details; maintaining the full artwork in view is not an acceptable default interaction.
+
+**Why:** The user explicitly chose close detail exploration over aiming from a distance.
+
+**How to apply:** Make close-range tracking a core technical requirement and validate MindAR tracking feasibility with representative artwork textures. Do not design the primary interaction around keeping the whole painting in frame.
+
+Artists choose per region whether enclosed geometry uses interior plateau volume or falloff from a positioned point.
+
+**Why:** The user selected per-region choice rather than one global falloff rule.
+
+**How to apply:** Keep both falloff behaviors configurable on each sound region.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
