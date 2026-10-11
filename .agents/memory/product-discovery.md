@@ -99,6 +99,12 @@ After a crop change, preserve existing region mappings but require artist review
 
 **How to apply:** Retain the mappings, flag them for verification against the new crop, and block republishing until reviewed.
 
+Reuse the artist-approved sound preview as published audio rather than generating it a second time.
+
+**Why:** The user chose reuse to avoid unnecessary regeneration.
+
+**How to apply:** Publishing should use the exact approved preview unless its prompt or audio is explicitly changed.
+
 The user asked to examine the PRD and question them on implementation details until satisfied.
 
 **Why:** The user requested requirements clarification before proceeding with development.
