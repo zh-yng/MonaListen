@@ -20,3 +20,9 @@ Do not treat Gemini's model catalog as proof that a model can still generate con
 **Why:** During analysis debugging, Google's model catalog still listed a model whose generate-content endpoint returned a retirement/not-found response naming a replacement. A successful catalog request did not establish generation availability.
 
 **How to apply:** Trust the explicit generate-content error over catalog membership. Verify a replacement before claiming analysis works, and distinguish model retirement, key restrictions, quota limits, and temporary overload instead of blaming every failure on the key. Do not silently substitute models or fabricate shapes when generation fails.
+
+For Git-provider connections, verify actual Git authentication rather than trusting connection-health metadata.
+
+**Why:** A GitHub connection reported active/healthy and already attached, but workspace Git authentication was rejected and the GitHub CLI had no login. Standard integration reconnect cards then rejected both the saved connection and connector handles. This is distinct from an unavailable repository or divergent Git history.
+
+**How to apply:** Start with a read-only remote check. Follow the documented OAuth recovery flow, but stop retrying cards if they reject the provider handles. Consult current Replit documentation for the account's Git Providers reconnect flow. Never extract provider credentials, put tokens into remotes, force-push, or modify existing history to work around authentication failures.

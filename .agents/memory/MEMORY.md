@@ -1,3 +1,3 @@
 - [Product scope and discovery](product-discovery.md) — First release is the self-service artist platform; clarify implementation with the user before development.
-- [Provider constraints](service-connection-constraints.md) — Tiger SSL semantics, browser-only MindAR, and Gemini catalogs that can still list retired models.
+- [Provider constraints](service-connection-constraints.md) — Tiger SSL, browser-only MindAR, Gemini retirement errors, and Git-provider auth metadata that can disagree with CLI access.
 - [Runtime resets](runtime-resets.md) — recheck managed workflows after a testing-worker reset; earlier running status may no longer be valid.
