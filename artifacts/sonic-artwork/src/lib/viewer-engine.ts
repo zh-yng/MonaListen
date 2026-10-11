@@ -1,6 +1,7 @@
 import type { ExperienceManifest } from '@workspace/api-client-react';
 import { Matrix4, Vector3 } from 'three';
 import { regionGain, sampleRegion } from './region-geometry';
+import { screenPointToNdc, type ScreenPoint } from './viewer-aim';
 export interface ViewerSession {
   pause(): void;
   resume(): Promise<void>;
@@ -11,7 +12,11 @@ export interface ViewerSession {
 export async function startExperience(
   container: HTMLElement,
   manifest: ExperienceManifest,
-  callbacks: { onStatus: (status: 'searching' | 'tracking' | 'lost' | 'paused') => void; onError: (message: string) => void },
+  callbacks: {
+    onStatus: (status: 'searching' | 'tracking' | 'lost' | 'paused') => void;
+    onError: (message: string) => void;
+    getFocusPoint: () => ScreenPoint | null;
+  },
 ): Promise<ViewerSession> {
   const iphone=/iPhone|iPod/.test(navigator.userAgent);
   if(!iphone)throw new Error('This listening experience requires an iPhone. Open the shared link in Safari on an iPhone.');
@@ -133,9 +138,12 @@ export async function startExperience(
       // All geometry and positional mixing stays on-device. No API/DB per frame.
       mind.scene.updateMatrixWorld(true);mind.camera.updateMatrixWorld(true);
       if(tracked&&!paused&&!describing&&anchor.group.visible){
+        const focus=callbacks.getFocusPoint();
+        const aim=focus && screenPointToNdc(focus,mind.renderer.domElement.getBoundingClientRect());
+        if(!aim){fade();mind.renderer.render(mind.scene,mind.camera);return;}
         inv.copy(anchor.group.matrixWorld).invert();
         origin.setFromMatrixPosition(mind.camera.matrixWorld).applyMatrix4(inv);
-        point.set(0,0,0.5).unproject(mind.camera).applyMatrix4(inv).sub(origin).normalize();
+        point.set(aim.x,aim.y,0.5).unproject(mind.camera).applyMatrix4(inv).sub(origin).normalize();
         const t=-origin.z/point.z;
         if(Number.isFinite(t)&&t>=0){
           const p={x:origin.x+t*point.x+0.5,y:0.5-(origin.y+t*point.y)/aspect};

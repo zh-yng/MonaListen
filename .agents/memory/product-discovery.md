@@ -57,6 +57,12 @@ When camera tracking is lost, fade out the mix and guide the visitor back until 
 
 **How to apply:** Fade rather than leave stale spatial positions playing; restore the mix smoothly when the target reacquires.
 
+The viewer's visible pulsing circle must match the point used for sound-region detection.
+
+**Why:** The user reported that the circle consistently detected regions above their actual position. Treating it as a decorative status indicator while aiming at the camera's optical center caused the mismatch.
+
+**How to apply:** Keep visual aiming and audio focus coupled when the viewer layout changes. Use the circle's displayed center relative to the renderer, not a fixed screen-center assumption or an offset applied to saved regions.
+
 The user confirmed that the camera listening experience works well on a real iPhone.
 
 **Why:** The user reported: "I just tested on the phone, it's actually working really well already."

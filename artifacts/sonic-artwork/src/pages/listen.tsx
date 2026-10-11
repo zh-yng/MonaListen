@@ -22,6 +22,7 @@ export default function Listen() {
   const { id = '', version = 'active' } = useParams<{ id: string; version?: string }>();
   const { data: m, isLoading, error, refetch } = useGetExperience(id, version);
   const stage = useRef<HTMLDivElement>(null);
+  const reticle = useRef<HTMLDivElement>(null);
   const session = useRef<ViewerSession | null>(null);
   const [status, setStatus] = useState<Status>('idle');
   const [fault, setFault] = useState<string | null>(null);
@@ -39,6 +40,11 @@ export default function Listen() {
       const s = await startExperience(stage.current, m, {
         onStatus: (st) => setStatus(st),
         onError: (msg) => { setFault(msg); },
+        getFocusPoint: () => {
+          const bounds = reticle.current?.getBoundingClientRect();
+          if (!bounds || bounds.width <= 0 || bounds.height <= 0) return null;
+          return { x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 };
+        },
       });
       session.current = s; s.setVolume(vol);
       setStatus((cur) => (cur === 'starting' ? 'searching' : cur));
@@ -91,7 +97,7 @@ export default function Listen() {
 
             {status === 'tracking' || status === 'searching' || status === 'lost' ? (
               <div className="my-8 flex justify-center" aria-hidden>
-                <div className={`h-24 w-24 rounded-full border-2 ${status === 'tracking' ? 'pulse-ring border-[hsl(14_82%_60%)] bg-[hsl(14_82%_50%/.3)]' : 'border-white/30'}`} />
+                <div ref={reticle} data-testid="camera-reticle" className={`h-24 w-24 rounded-full border-2 ${status === 'tracking' ? 'pulse-ring border-[hsl(14_82%_60%)] bg-[hsl(14_82%_50%/.3)]' : 'border-white/30'}`} />
               </div>
             ) : <div className="flex-1" />}
 
