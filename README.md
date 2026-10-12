@@ -8,7 +8,7 @@ MonaListen won 2 award categories during Hacklanta '26, namely:
 
 Learn about / try the project for yourself below!
 
-[![Devpost](https://img.shields.io/badge/Devpost-View_Project-003E54?style=for-the-badge&logo=devpost&logoColor=white)]([https://devpost.com/software/mona-listen](https://devpost.com/software/mona-listen)) [![Website](https://img.shields.io/badge/Website-Live_Demo-0D9488?style=for-the-badge&logo=googlechrome&logoColor=white)](https://monalistento.us/)
+[![Devpost](https://img.shields.io/badge/Devpost-View_Project-003E54?style=for-the-badge&logo=devpost&logoColor=white)](https://devpost.com/software/mona-listen) [![Website](https://img.shields.io/badge/Website-Live_Demo-0D9488?style=for-the-badge&logo=googlechrome&logoColor=white)](https://monalistento.us/)
 
 <img width="333" height="222" alt="image" src="https://github.com/user-attachments/assets/8133f787-3ea5-431a-a483-29b0b0968958" />
 
